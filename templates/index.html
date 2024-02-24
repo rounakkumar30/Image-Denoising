@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Denoiser</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-image: url('https://res.cloudinary.com/dmzp6notl/image/upload/v1706207202/bkoftheperson_iktqli.png');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            justify-content: center;
+        }
+        
+        .title-text {
+            color: #ffffff;
+        }
+        
+        h1:first-child {
+            margin-bottom: 0;
+        }
+        
+        h1,
+        h2,
+        h5 {
+            font-family: 'Montserrat Alternates', sans-serif;
+            color: #ffffff;
+            text-align: center;
+            letter-spacing: 2px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        h1 {
+            font-size: 46px;
+        }
+        
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            color: #ffffff;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0);
+            padding: 10px 20px;
+            box-sizing: border-box;
+            z-index: 1;
+        }
+        
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            color: rgb(255, 255, 255);
+            margin: 0;
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-family: 'Montserrat Alternates', sans-serif;
+            font-weight: bold;
+        }
+        
+        .nav-link:hover {
+            color: #fc0000;
+        }
+        
+        .hamburger-icon {
+            display: none;
+            cursor: pointer;
+        }
+        
+        .hamburger-icon div {
+            width: 25px;
+            height: 3px;
+            background-color: #fff;
+            margin: 6px 0;
+            transition: 0.4s;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                right: 20px;
+                background-color: #000;
+                z-index: 1;
+            }
+            .nav-link {
+                width: 100%;
+                text-align: center;
+                color: #fff;
+                /* Default text color for nav links */
+                text-decoration: none;
+                font-family: 'Montserrat Alternates', sans-serif;
+                font-weight: bold;
+            }
+            .nav-link:hover {
+                color: #fc0000;
+                /* Hover text color for all nav links */
+            }
+            .nav-link[href="#Singup"],
+            .nav-link[href="#Login"] {
+                background-color: #fc0000;
+                /* Red background color */
+                color: #fff;
+                /* White text color */
+            }
+        }
+        
+        form {
+            margin-top: 70px;
+            padding: 20px;
+            border: 2px solid #000000;
+            border-radius: 10px;
+            background-color: #00000000;
+            box-shadow: 0 0 10px #1a2c01;
+            max-width: 400px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        label {
+            display: block;
+            color: #fff;
+            margin-bottom: 10px;
+            font-family: 'Montserrat Alternates', sans-serif;
+            font-weight: bold;
+        }
+        
+        .file-input-card-horizontal {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 2px dashed #676767;
+            padding-right: 40px;
+            padding-left: 40px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        
+        .file-input-card-horizontal .file-input-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .file-input-card-horizontal .file-name {
+            color: #ffffff;
+            font-family: 'Montserrat Alternates', sans-serif;
+            font-weight: bold;
+            margin-left: 40px;
+        }
+        
+        .file-input-card-horizontal .file-input-label {
+            background: linear-gradient(to right, #324DF6, #667DFA);
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            font-family: 'Montserrat Alternates', sans-serif;
+            border-radius: 100px;
+            font-style: normal;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s ease;
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+        
+        .flex-container {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+        }
+        
+        select {
+            flex: 1;
+            border-radius: 100px;
+            border: 2px solid #000000;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.9);
+            box-shadow: 0 0 10px #1a2c01;
+            font-family: 'Montserrat Alternates', sans-serif;
+            margin-right: 10px;
+            position: relative;
+        }
+        
+        select::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 100px;
+        }
+        
+        button {
+            background: linear-gradient(to right, #324DF6, #667DFA);
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            font-family: 'Montserrat Alternates', sans-serif;
+            border-radius: 100px;
+            font-style: normal;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s ease;
+        }
+        
+        button:hover {
+            background: linear-gradient(to right, #af29b9, #667DFA);
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="title-container">Denoiser AI</div>
+        <div class="hamburger-icon" onclick="toggleNav()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <ul class="nav-links">
+            <li><a class="nav-link" href="#">Contact Us</a></li>
+            <li><a class="nav-link" href="#">Singup</a></li>
+            <li id="login-li"><a class="nav-link" id="login-link" href="javascript:void(0);" onclick="onSignIn()">Login</a></li>
+        </ul>
+    </div>
+
+    <h1>The AI Image Enhancer</h1>
+    <h1>Redefine Reality</h1>
+    <h5>Effortlessly enhance & upscale your photo to get higher resolution images.</h5>
+
+    <form action="/process_image" method="post" enctype="multipart/form-data">
+        <label for="image">Upload Image which you want to enhance</label>
+
+        <!-- Card view for file input (with linear layout) -->
+        <div class="file-input-card-horizontal">
+            <div class="file-input-container">
+                <label for="image" class="file-input-label">Choose File</label>
+                <input id="image" type="file" name="image" accept=".jpg, .jpeg, .png" required style="display: none;">
+            </div>
+            <span class="file-name">No file chosen</span>
+        </div>
+
+        <div class="flex-container">
+            <label for="processing_option"></label>
+            <select name="processing_option">
+                <option value="original">Original Image</option>
+                <option value="gaussian_noise">Gaussian Noise</option>
+                <option value="white_noise">White Noise</option>
+                <option value="brownian_noise">Brownian Noise</option>
+                <option value="impulse_valued_noise">Impulse-valued Noise</option>
+                <option value="periodic_noise">Periodic Noise</option>
+                <option value="gamma_noise">Gamma Noise</option>
+                <option value="structured_noise">Structured Noise</option>
+                <option value="denoise">Denoise</option>
+            </select>
+
+            <button type="submit">Process Image</button>
+        </div>
+    </form>
+
+    <script>
+        document.getElementById('image').addEventListener('change', function() {
+            const fileName = this.files[0].name;
+            document.querySelector('.file-name').textContent = fileName;
+        });
+
+        function toggleNav() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('show');
+        }
+    </script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script>
+        function onSignIn() {
+            gapi.auth2.getAuthInstance().signIn().then(function(user) {
+                const userEmail = user.getBasicProfile().getEmail();
+                document.getElementById('login-link').textContent = userEmail;
+                document.getElementById('login-li').classList.remove('show'); // Hide the dropdown if it's open
+            });
+        }
+
+        function initGoogleSignIn() {
+            gapi.load('auth2', function() {
+                gapi.auth2.init({
+                    client_id: '931795160274-vp5ffuhn5pk6tv8h6v4789c6ot8vqgj0.apps.googleusercontent.com',
+                });
+            });
+        }
+
+        // Call the initGoogleSignIn function when the page loads
+        window.onload = initGoogleSignIn;
+    </script>
+
+</body>
+
+</html>

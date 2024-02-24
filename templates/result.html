@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Denoiser AI</title>
+
+    <style>
+        body {
+            background-image: url('https://res.cloudinary.com/dmzp6notl/image/upload/v1706207202/bkoftheperson_iktqli.png');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            justify-content: center;
+        }
+        
+        h1 {
+            font-family: 'Montserrat Alternates', sans-serif;
+            color: #ffffff;
+            text-align: center;
+            letter-spacing: 2px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        img {
+            max-width: 40%;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            color: #ffffff;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0);
+            padding: 10px 20px;
+            box-sizing: border-box;
+            z-index: 1;
+        }
+        
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            color: rgb(255, 255, 255);
+            margin: 0;
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-family: 'Montserrat Alternates', sans-serif;
+            font-weight: bold;
+        }
+        
+        .nav-link:hover {
+            color: #fc0000;
+        }
+        
+        .hamburger-icon {
+            display: none;
+            cursor: pointer;
+        }
+        
+        .hamburger-icon div {
+            width: 25px;
+            height: 3px;
+            background-color: #fff;
+            margin: 6px 0;
+            transition: 0.4s;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                right: 20px;
+                background-color: #000;
+                z-index: 1;
+            }
+            .nav-links.show {
+                display: flex;
+            }
+            .hamburger-icon {
+                display: flex;
+            }
+            .nav-link {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Result</h1>
+
+    <div class="navbar">
+        <div class="title-container">Denoiser AI</div>
+        <div class="hamburger-icon" onclick="toggleNav()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <ul class="nav-links">
+            <li>
+                <a class="nav-link" href="#">Contact Us</a>
+            </li>
+            <li><a class="nav-link" href="#">Singup</a></li>
+            <li>
+                <a class="nav-link" href="#">Login</a>
+            </li>
+        </ul>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 80%;">
+        <div style="text-align: center;">
+            <h2 style="color: white;">Upload Image</h2>
+            <img src="data:image/png;base64,{{ original_image }}" alt="Original Image" style="width: 400px;">
+
+        </div>
+
+        <div style="text-align: center;">
+            <h2 style="color: white;">Processed Image</h2>
+            <img src="data:image/png;base64,{{ result_image }}" alt="Processed Image" style="width: 400px;">
+
+        </div>
+    </div>
+
+
+
+
+    <script>
+        function toggleNav() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('show');
+        }
+    </script>
+
+</body>
+
+</html>
