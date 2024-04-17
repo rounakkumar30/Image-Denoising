@@ -103,7 +103,7 @@ def process_image_route():
         result_image_base64 = b64encode(processed_buffer).decode('utf-8')
 
         # Render the result template with the original and processed images
-        return render_template('result.html', original_image=original_image_base64, result_image=result_image_base64)
+        return render_template('templates/result.html', original_image=original_image_base64, result_image=result_image_base64)
 
     except Exception as e:
         return render_template('error.html', message=f"Error processing image: {str(e)}")
