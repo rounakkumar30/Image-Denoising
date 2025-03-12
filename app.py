@@ -6,6 +6,13 @@ from base64 import b64encode
 from base64 import b64encode, b64decode
 app = Flask(__name__)
 
+from flask import Flask, render_template, request
+import cv2
+import numpy as np
+from base64 import b64encode
+
+app = Flask(__name__)
+
 def add_gaussian_noise(image, mean=0, sigma=25):
     row, col, ch = image.shape
     gauss = np.random.normal(mean, sigma, (row, col, ch))
@@ -73,6 +80,58 @@ def process_image(image, processing_option):
     elif processing_option == 'denoise':
         # Denoise the image using cv2.fastNlMeansDenoisingColored
         return cv2.fastNlMeansDenoisingColored(image, None, 10, 10, 7, 21)
+
+# Routes
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/process_image', methods=['POST'])
+def process_image_route():
+    if 'image' not in request.files:
+        return render_template('error.html', message="No image file provided.")
+
+    image_file = request.files['image']
+
+    try:
+        # Load the image in RGB color space
+        file_bytes = np.frombuffer(image_file.read(), np.uint8)
+        original_image = cv2.imdecode(file_bytes, cv2.IMREAD_UNCHANGED)
+
+        # Verify and enforce 3-channel (color) image
+        if len(original_image.shape) == 2:
+            # Convert grayscale to BGR
+            original_image = cv2.cvtColor(original_image, cv2.COLOR_GRAY2BGR)
+        elif original_image.shape[2] == 4:
+            # Handle alpha channel (convert RGBA to BGR)
+            original_image = cv2.cvtColor(original_image, cv2.COLOR_BGRA2BGR)
+
+        # Get the selected processing option
+        processing_option = request.form.get('processing_option', 'original')
+
+        # Process the image
+        processed_image = process_image(original_image, processing_option)
+
+        # Encode the images as Base64
+        _, original_buffer = cv2.imencode('.png', original_image)
+        original_image_base64 = b64encode(original_buffer).decode('utf-8')
+
+        _, processed_buffer = cv2.imencode('.png', processed_image)
+        result_image_base64 = b64encode(processed_buffer).decode('utf-8')
+
+        # Render the result page with both images
+        return render_template(
+            'result.html', 
+            original_image=original_image_base64, 
+            result_image=result_image_base64
+        )
+
+    except Exception as e:
+        return render_template('error.html', message=f"Error processing image: {str(e)}")
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
 
 @app.route('/')
 def index():
