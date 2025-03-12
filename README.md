@@ -28,12 +28,6 @@ Image denoising is a process of removing noise from images while preserving impo
 
 ---
 
-## 📷 Sample Results
-| Noisy Image | Denoised Image |
-|-------------|---------------|
-| ![Noisy](photo/noisy.png) | ![Denoised](photo/denoised.png) |
-
----
 
 ## 🛠️ Installation & Setup
 
@@ -71,7 +65,7 @@ Contributions are welcome! Feel free to submit **pull requests** or open an **is
 ## 📜 License
 This project is licensed under the **MIT License**.
 
----
+
 
 🚀 **Developed by [Rounak Kumar](https://github.com/rounakkumar30)**
 ```
