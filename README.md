@@ -64,8 +64,7 @@ Contributions are welcome! Feel free to submit **pull requests** or open an **is
 
 ## 📜 License
 This project is licensed under the **MIT License**.
-
+---
 
 
 🚀 **Developed by [Rounak Kumar](https://github.com/rounakkumar30)**
-```
